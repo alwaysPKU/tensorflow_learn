@@ -1,0 +1,5 @@
+MNIST_data/
+logs/
+my_net/
+.idea/
+tensorflow.models.image.cifar10/
