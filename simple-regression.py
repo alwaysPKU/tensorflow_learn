@@ -33,7 +33,7 @@ sess.run(init)
 
 for step in range(201):
     sess.run(train)
-    if step % 20 == 0:
+    if step % 2 == 0:
         print(step, sess.run(Weights), sess.run(biases))
 
 
