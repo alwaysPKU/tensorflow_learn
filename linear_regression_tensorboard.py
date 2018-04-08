@@ -24,8 +24,10 @@ W = tf.Variable(tf.random_normal([1]), name='weight')
 b = tf.Variable(tf.zeros([1]), name='bias')
 ## 前向结构
 z = tf.multiply(X, W) + b
+tf.summary.histogram('z', z)
 ## 反向优化
 cost = tf.reduce_mean(tf.square(Y - z))
+tf.summary.scalar('loss_function', cost)
 learning_rate = 0.01
 optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
 # 训练
@@ -35,9 +37,12 @@ display_step = 2
 # saver = tf.train.Saver()
 with tf.Session() as sess:
     sess.run(init)
+    merged_summary_op = tf.summary.merge_all()
+    summary_writer = tf.summary.FileWriter('log/mnist_with_summaries', sess.graph)
     # plot_data = {'batch_size': [], 'loss': []}
     for epoch in range(training_epochs):
         # sess.run(optimizer, feed_dict={X: train_X, Y: train_Y})
+
         for (x, y) in zip(train_X, train_Y):
             sess.run(optimizer, feed_dict={X: x, Y: y})
         if epoch % display_step == 0:
@@ -46,6 +51,8 @@ with tf.Session() as sess:
             if not (loss == 'NA'):
                 plot_data['batch_size'].append(epoch)
                 plot_data['loss'].append(loss)
+        summary_str = sess.run(merged_summary_op, feed_dict={X: train_X, Y: train_Y})
+        summary_writer.add_summary(summary_str, epoch)
     print('finished')
     print('cost=', sess.run(cost, feed_dict={X: train_X, Y: train_Y}), 'W=', sess.run(W), 'b=', sess.run(b))
 

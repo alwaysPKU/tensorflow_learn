@@ -90,5 +90,5 @@ for i in range(1000):
         prediction_value = sess.run(prediction, feed_dict={xs: x_data})
         lines = ax.plot(x_data, prediction_value, 'r-', lw=3)
         plt.pause(0.1)
-        rs = sess.run(merged, feed_dict={xs: x_data, ys: y_data})
-        writer.add_summary(rs, i)
+    rs = sess.run(merged, feed_dict={xs: x_data, ys: y_data})
+    writer.add_summary(rs, i)
